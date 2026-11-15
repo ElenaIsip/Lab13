@@ -11,20 +11,20 @@ int main(void) {
     char input_path[256];
     char output_path[512];
 
-    printf("Введите имя входного файла: ");
+    printf("Р’РІРµРґРёС‚Рµ РёРјСЏ РІС…РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р°: ");
     if (scanf("%255s", input_path) != 1) {
-        fprintf(stderr, "Ошибка чтения имени файла\n");
+        fprintf(stderr, "РћС€РёР±РєР° С‡С‚РµРЅРёСЏ РёРјРµРЅРё С„Р°Р№Р»Р°\n");
         return 1;
     }
 
     FILE* fin = fopen(input_path, "r");
     if (!fin) {
-        perror("Не удалось открыть входной файл");
+        perror("РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ РІС…РѕРґРЅРѕР№ С„Р°Р№Р»");
         return 1;
     }
 
-    /* Формируем имя выходного файла:
-       <имя>_x1.66_ceil<расширение> */
+    /* Р¤РѕСЂРјРёСЂСѓРµРј РёРјСЏ РІС‹С…РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р°:
+       <РёРјСЏ>_x1.66_ceil<СЂР°СЃС€РёСЂРµРЅРёРµ> */
     const char* dot = strrchr(input_path, '.');
     if (dot) {
         size_t base_len = (size_t)(dot - input_path);
@@ -38,7 +38,7 @@ int main(void) {
 
     FILE* fout = fopen(output_path, "w");
     if (!fout) {
-        perror("Не удалось открыть выходной файл");
+        perror("РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ РІС‹С…РѕРґРЅРѕР№ С„Р°Р№Р»");
         fclose(fin);
         return 1;
     }
@@ -47,11 +47,11 @@ int main(void) {
     int count = 0;
 
     while (fgets(line, sizeof(line), fin)) {
-        /* убираем возможные пробелы/переводы строк */
+        /* СѓР±РёСЂР°РµРј РІРѕР·РјРѕР¶РЅС‹Рµ РїСЂРѕР±РµР»С‹/РїРµСЂРµРІРѕРґС‹ СЃС‚СЂРѕРє */
         char* p = line;
         while (*p == ' ' || *p == '\t') p++;
 
-        /* пропускаем пустые строки */
+        /* РїСЂРѕРїСѓСЃРєР°РµРј РїСѓСЃС‚С‹Рµ СЃС‚СЂРѕРєРё */
         if (*p == '\0' || *p == '\n' || *p == '\r') continue;
 
         char* endptr = NULL;
@@ -59,7 +59,7 @@ int main(void) {
 
         if (endptr == p || (*endptr != '\0' && *endptr != '\n' &&
             *endptr != '\r' && *endptr != ' ' && *endptr != '\t')) {
-            fprintf(stderr, "Пропущена некорректная строка: %s", line);
+            fprintf(stderr, "РџСЂРѕРїСѓС‰РµРЅР° РЅРµРєРѕСЂСЂРµРєС‚РЅР°СЏ СЃС‚СЂРѕРєР°: %s", line);
             continue;
         }
 
@@ -71,7 +71,7 @@ int main(void) {
     fclose(fin);
     fclose(fout);
 
-    printf("Обработано чисел: %d\n", count);
-    printf("Результат записан в файл: %s\n", output_path);
+    printf("РћР±СЂР°Р±РѕС‚Р°РЅРѕ С‡РёСЃРµР»: %d\n", count);
+    printf("Р РµР·СѓР»СЊС‚Р°С‚ Р·Р°РїРёСЃР°РЅ РІ С„Р°Р№Р»: %s\n", output_path);
     return 0;
 }
