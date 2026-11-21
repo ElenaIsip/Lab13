@@ -1,45 +1,51 @@
 #include <stdio.h>
-#include <locale.h>
+#include <string.h>
+#include <ctype.h> 
 
 int main(void)
 {
-    setlocale(LC_ALL, "Russian");
+    char name[50];
+    char greeting[100];
+
+    // ================= ШАГ 1: Ввод имени =================
+    puts("Пожалуйста, введите ваше имя: ");
+    scanf("%49s", name); 
+
+    // ================= 1.2: Имя заглавными буквами =================
+ 
+    for (int i = 0; name[i] != '\0'; i++) {
+        name[i] = toupper((unsigned char)name[i]);
+    }
+
+    // ================= ШАГ 3: Формирование приветствия =================
    
+    strcpy(greeting, "Привет, ");
+   
+    strcat(greeting, name);
 
-    FILE* in;
-    int a;
-    int sum = 0;
-    int n = 0;
-    double avg;
+    // ================= 1.3: Длина строки 40 символов =================
+ 
+    int current_len = strlen(greeting);
+    int target_len = 40;
+    int exclamation_count = target_len - current_len;
 
-    in = fopen("numbers.txt", "r");
-    if (in == NULL)
-    {
-        printf("Ошибка: не удалось открыть файл numbers.txt\n");
-        return 1;
-    }
-
-    while (!feof(in))
-    {
-        if (fscanf(in, "%d", &a) == 1)
-        {
-            sum += a;
-            n++;
+    
+    if (exclamation_count > 0) {
+       
+        for (int i = 0; i < exclamation_count; i++) {
+            
+            strcat(greeting, "!");
         }
+    } else {
+        puts("Внимание: имя слишком длинное, лимит в 40 символов превышен!");
     }
-    fclose(in);
 
-    if (n > 0)
-    {
-        avg = (double)sum / n;
-        printf("Количество чисел: %d\n", n);
-        printf("Сумма чисел: %d\n", sum);
-        printf("Среднее арифметическое: %.2f\n", avg);
-    }
-    else
-    {
-        printf("Файл не содержит целых чисел.\n");
-    }
+    // ================= ШАГ 4: Вывод результата =================
+    puts("--- Результат ---");
+    puts(greeting);
+
+
+    printf("Фактическая длина строки: %zu\n", strlen(greeting));
 
     return 0;
 }
